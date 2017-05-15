@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,14 +10,18 @@ namespace WebJobResourceData.Services
 {
     public class DataContext : IDataContext
     {
-        public Task SaveAzureResources(IEnumerable<AzureResource> data)
+        private DataModel _db;
+        public DataContext()
         {
-            throw new NotImplementedException();
+            _db = new DataModel("ASQLConn");
         }
-
-        public Task SaveWebSitePlans(IEnumerable<WebSitePlan> data)
+        public async Task SaveAzureResourcesAsync(IEnumerable<AzureResource> data)
         {
-            throw new NotImplementedException();
+            var table = _db.AzureResource;
+
+            table.AddRange(data);
+
+            await _db.SaveChangesAsync();
         }
     }
 }

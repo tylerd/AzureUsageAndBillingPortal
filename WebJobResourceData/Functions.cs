@@ -13,16 +13,22 @@ namespace WebJobResourceData
     {
         // This function will get triggered/executed when a new message is written 
         // on an Azure Queue called queue.
-        public static async void ProcessResourceRequest([QueueTrigger("resourcedatarequests")] ResourceRequest message, TextWriter log)
+        public static void ProcessResourceRequest([QueueTrigger("resourcedatarequests")] ResourceRequest message, TextWriter log)
         {
             log.WriteLine("Processing Resource Data Request for Subscription Id: " + message.SubscriptionId);
 
             var resourceService = Program.ResourceService;
             var dataContext = Program.DataContext;
 
-            var data = await resourceService.GetResources(message.SubscriptionId);
+            log.WriteLine("Initialized context");
 
-            await dataContext.SaveAzureResources(data);
+            var data = resourceService.GetResourcesAsync(message.SubscriptionId).Result;
+
+            log.WriteLine("Retrieved Resources - Count: " + data.Count());
+
+            dataContext.SaveAzureResourcesAsync(data).Wait();
+
+            log.WriteLine("Completed Save to DB");
         }
     }
 }

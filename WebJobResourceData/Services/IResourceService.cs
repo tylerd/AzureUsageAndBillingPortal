@@ -9,6 +9,6 @@ namespace WebJobResourceData.Services
 {
     public interface IResourceService
     {
-        Task<IEnumerable<AzureResource>> GetResources(string subscriptionId);
+        Task<IEnumerable<AzureResource>> GetResourcesAsync(string subscriptionId);
     }
 }

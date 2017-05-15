@@ -9,8 +9,6 @@ namespace WebJobResourceData.Services
 {
     public interface IDataContext
     {
-        Task SaveAzureResources(IEnumerable<AzureResource> data);
-
-        Task SaveWebSitePlans(IEnumerable<WebSitePlan> data);
+        Task SaveAzureResourcesAsync(IEnumerable<AzureResource> data);
     }
 }
